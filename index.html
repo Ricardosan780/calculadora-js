@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simples</title>
+    <style>
+        /* Reset básico e centralização da calculadora na tela */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vi;
+            background-color: #f4f7f6;
+        }
+
+        /* Estrutura do corpo da calculadora */
+        .calculadora {
+            background-color: #202020;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+            width: 320px;
+        }
+
+        /* Tela de exibição (Display) */
+        #display {
+            width: 100%;
+            height: 60px;
+            background-color: #a7bca5;
+            color: #1a1a1a;
+            text-align: right;
+            padding: 15px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+
+        /* Grade de botões */
+        .botoes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        /* Estilo padrão dos botões */
+        button {
+            padding: 18px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #333333;
+            color: #ffffff;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #444444;
+        }
+
+        /* Cores específicas para operadores e ações */
+        button.operador {
+            background-color: #ff9500;
+            color: white;
+        }
+
+        button.operador:hover {
+            background-color: #e08400;
+        }
+
+        button.limpar {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        button.limpar:hover {
+            background-color: #c9302c;
+        }
+
+        button.igual {
+            background-color: #5cb85c;
+            color: white;
+            grid-column: span 2; /* Faz o botão '=' ocupar duas colunas */
+        }
+
+        button.igual:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculadora">
+        <!-- Tela onde os números e resultados aparecem -->
+        <input type="text" id="display" value="0" disabled>
+        
+        <!-- Teclado da calculadora -->
+        <div class="botoes">
+            <button class="limpar" onclick="limparTela()">C</button>
+            <button class="operador" onclick="adicionarCaractere('/')">/</button>
+            <button class="operador" onclick="adicionarCaractere('*')">*</button>
+            <button class="operador" onclick="adicionarCaractere('-')">-</button>
+
+            <button onclick="adicionarCaractere('7')">7</button>
+            <button onclick="adicionarCaractere('8')">8</button>
+            <button onclick="adicionarCaractere('9')">9</button>
+            <button class="operador" onclick="adicionarCaractere('+')">+</button>
+
+            <button onclick="adicionarCaractere('4')">4</button>
+            <button onclick="adicionarCaractere('5')">5</button>
+            <button onclick="adicionarCaractere('6')">6</button>
+            <button onclick="adicionarCaractere('.')">.</button>
+
+            <button onclick="adicionarCaractere('1')">1</button>
+            <button onclick="adicionarCaractere('2')">2</button>
+            <button onclick="adicionarCaractere('3')">3</button>
+            <button onclick="adicionarCaractere('0')">0</button>
+
+            <button class="igual" onclick="calcularResultado()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // Captura a referência do elemento de texto (display)
+        const display = document.getElementById('display');
+
+        // Função para adicionar números e operadores na tela
+        function adicionarCaractere(valor) {
+            // Se a tela tiver apenas '0', substitui pelo novo valor (evita coisas como '05')
+            if (display.value === '0' && valor !== '.') {
+                display.value = valor;
+            } else {
+                display.value += valor;
+            }
+        }
+
+        // Função para limpar tudo (Botão C)
+        function limparTela() {
+            display.value = '0';
+        }
+
+        // Função que resolve a expressão matemática na tela
+        function calcularResultado() {
+            try {
+                // A função eval() interpreta a string como código JavaScript (executa a conta)
+                let resultado = eval(display.value);
+                
+                // Se o resultado for uma divisão por zero ou inválido
+                if (resultado === Infinity || isNaN(resultado)) {
+                    display.value = "Erro";
+                } else {
+                    display.value = resultado;
+                }
+            } catch (error) {
+                // Se o usuário digitar algo incorreto (ex: "++" ou "5+*")
+                display.value = "Erro";
+            }
+        }
+    </script>
+
+</body>
+</html>
